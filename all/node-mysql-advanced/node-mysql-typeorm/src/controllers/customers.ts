@@ -40,31 +40,31 @@ export const deleteCustomer = async (customerId: number): Promise<boolean> => {
 // join `orders-products` op on o.id = op.order_id
 // join products p on p.id = op.product_id
 // where is_paid = true
-export const findCustomerOrdersProductsByPaidStatus = async (
-  customerId: number,
-  isPaid: boolean
-): Promise<Customer[]> => {
-  return await Customer.find({
-    select: {
-      first_name: true,
-      last_name: true,
-      points: true,
-      orders: {
-        order_date: true,
-        status: true,
-        is_paid: true,
-        products: {
-          name: true,
-          quantity: true,
-          unit_price: true,
-          currency: true,
-        },
-      },
-    },
-    where: {
-      id: customerId,
-      orders: { is_paid: isPaid },
-    },
-    relations: { orders: { products: true } },
-  })
-}
+// export const findCustomerOrdersProductsByPaidStatus = async (
+//   customerId: number,
+//   isPaid: boolean
+// ): Promise<Customer[]> => {
+//   return await Customer.find({
+//     select: {
+     
+//       last_name: true,
+//       points: true,
+//       orders: {
+//         order_date: true,
+//         status: true,
+//         is_paid: true,
+//         products: {
+//           name: true,
+//           quantity: true,
+//           unit_price: true,
+        
+//         },
+//       },
+//     },
+//     where: {
+//       id: customerId,
+//       orders: { is_paid: isPaid },
+//     },
+//     relations: { orders: { products: true } },
+//   })
+// }

@@ -4,7 +4,7 @@ import {
   deleteCustomer,
   findCustomers,
   updateCustomer,
-  findCustomerOrdersProductsByPaidStatus,
+  // findCustomerOrdersProductsByPaidStatus,
 } from '../controllers/customers'
 
 const router: Router = Router()
@@ -20,18 +20,18 @@ router.post('/', async (req: Request, res: Response) => {
 })
 
 
-router.get('/orders-products', async (req: Request, res: Response) => {
-    try {
-      const [customer] = await findCustomerOrdersProductsByPaidStatus(
-        +req.query.customerId,
-        req.query.isPaid === 'true'
-      )
-      customer ? res.send(customer) : res.sendStatus(404)
-    } catch (error) {
-      console.error(error)
-      res.sendStatus(500)
-    }
-  })
+// router.get('/orders-products', async (req: Request, res: Response) => {
+//     try {
+//       const [customer] = await findCustomerOrdersProductsByPaidStatus(
+//         +req.query.customerId,
+//         req.query.isPaid === 'true'
+//       )
+//       customer ? res.send(customer) : res.sendStatus(404)
+//     } catch (error) {
+//       console.error(error)
+//       res.sendStatus(500)
+//     }
+//   })
 
 router.get('/:id', async (req: Request, res: Response) => {
   try {

@@ -1,5 +1,5 @@
 import { LessThan, MoreThanOrEqual } from 'typeorm'
-import { Currency, Product } from '../entity/Product'
+import {  Product } from '../entity/Product'
 
 export const createProduct = async (record: Product): Promise<Product> => {
   const product = Product.create(record)
@@ -50,14 +50,14 @@ export const analayzeQuantity = async (
     .getRawMany()
 }
 
-export const findProductsByQuantityOrPrice = async (
-  productQuntity: number,
-  productPrice: number
-): Promise<Product[]> => {
-  return await Product.find({
-    where: [
-      { quantity: MoreThanOrEqual(productQuntity) },
-      { unit_price: LessThan(productPrice), currency: Currency.EUR },
-    ],
-  })
-}
+// export const findProductsByQuantityOrPrice = async (
+//   productQuntity: number,
+//   productPrice: number
+// ): Promise<Product[]> => {
+//   return await Product.find({
+//     where: [
+//       { quantity: MoreThanOrEqual(productQuntity) },
+//       { unit_price: LessThan(productPrice), currency: Currency.EUR },
+//     ],
+//   })
+// }

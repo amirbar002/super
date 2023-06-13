@@ -2,11 +2,6 @@ import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, JoinColu
 import { Customer } from './Customer'
 import { Product } from './Product';
 
-enum Currency {
-  ILS = 'ILS',
-  USD = 'USD',
-  EUR = 'EUR',
-}
 
 export enum Status {
   SUCCEEDED = 'succeeded',
@@ -18,11 +13,11 @@ export class Order extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column()
   price: number
 
-  @Column({ type: 'enum', enum: Currency })
-  currency: Currency
+  @Column()
+  currency: string
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   order_date: Date

@@ -1,15 +1,25 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, ManyToMany,OneToMany,JoinTable } from 'typeorm'
+import {
+  Column,
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  ManyToMany,
+  OneToMany,
+  JoinTable,
+} from "typeorm";
 
-import { Order } from './Order'
+import { Order } from "./Order";
 
-@Entity('customers')
+@Entity("customers")
 export class Customer extends BaseEntity {
-  @Column()
- id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
- enail: string
+  email: string;
 
   @OneToMany(() => Order, (order) => order.customer)
-  orders: Order[]
+  orders: Order[];
 }

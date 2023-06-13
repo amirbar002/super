@@ -5,11 +5,14 @@ import { Order } from './Order';
 
 @Entity('products')
 export class Product extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
   name: string
+
+  @Column({ type: 'blob' })
+  image: Buffer;
 
   @Column()
   quantity: number

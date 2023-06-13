@@ -1,16 +1,10 @@
-import { Home } from "@/app/home/home"
+import Link from "next/link"
 
 function index() {
   return (
-    <div>index
-       <Home/>
-       <a href="abuot">abuot</a>
-       <br/>
-       <a href="cal">cal</a>
-       <br/>
-       <a href="shop">shop</a>
+    <div>welcome
+         <Link href="homepage">home</Link>
     </div>
-   
   )
 }
 
