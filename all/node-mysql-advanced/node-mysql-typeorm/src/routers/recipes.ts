@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { NOT_FOUND } from '../constants'
-import { createOrder, findOrders, deleteOrder, updateOrder, joinAndGroupbyOrders } from '../controllers/orders'
+import { createOrder, findOrders, deleteOrder, updateOrder, joinAndGroupbyOrders } from '../controllers/recipes'
 
 const router: Router = Router()
 

@@ -1,5 +1,5 @@
 import { NOT_FOUND } from '../constants'
-import { Order, Status } from '../entity/Order'
+import { Order, Status } from '../entity/Recipes'
 import { Product } from '../entity/Product'
 import { findCustomers } from './customers'
 import { findProducts } from './products'

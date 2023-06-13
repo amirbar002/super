@@ -8,7 +8,7 @@ function homepage() {
        <Home/>
        <Link href="abuot">abuot</Link>
        <br/>
-       <Link href="product">add product</Link>
+       <Link href="addRecipes">הוסיף מתכון</Link>
        <br/>
        <Link href="shop">shop</Link>
        <button className="btn btn-primary">Primary Button</button>

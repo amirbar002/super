@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express, { Request, Response, Application } from 'express'
 import { AppDataSource } from './data-source'
 import customers from './routers/customers'
-import orders from './routers/orders'
+import orders from './routers/recipes'
 import products from './routers/products'
 ;(async () => {
   try {

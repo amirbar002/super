@@ -10,26 +10,26 @@ export enum Status {
 
 @Entity('orders')
 export class Order extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number
 
   @Column()
-  price: number
+  img: number
 
   @Column()
-  currency: string
+  Ingredients: string
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
-  order_date: Date
+  @Column()
+  Instructions: string
 
-  @Column({ type: 'enum', enum: Status })
-  status: Status
+  @Column()
+  name: string
 
-  @Column({type: 'varchar', length: 255, name:'notes', nullable: true})
-  comments: string
-
-  @Column({nullable: false})
-  is_paid: boolean
+  @Column()
+  phone: number
+  
+  @Column({nullable: true, default: true})
+  approval: boolean
 
   @ManyToOne(()=> Customer, customer => customer.orders, {onDelete: "RESTRICT", onUpdate: "CASCADE"})
   @JoinColumn({name: 'customer_id'})
