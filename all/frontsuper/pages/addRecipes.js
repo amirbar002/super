@@ -1,110 +1,225 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useRef, useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import "bootstrap/dist/css/bootstrap.css";
+import Form from "react-bootstrap/Form";
+import axios from "axios";
+import "../src/app/globals.css";
 
-function Product() {
-  const [alldata, setdata] = useState('');
+function addRecipes() {
+  const [alldata, setalldata] = useState("");
   const [hasPhoto, sethasPhoto] = useState(false);
+  const [tast, settast] = useState(true);
+  const [img, setimg] = useState("");
   const { register, handleSubmit } = useForm();
 
-  const videoRef = useRef(null)
-  const photoRef = useRef(null)
+  const videoRef = useRef(null);
+  const photoRef = useRef(null);
 
   const onSubmitt = (data) => {
-    console.log('submit');
+    const bufferData = Buffer.from(img);
+    console.log("submit");
     console.log(data);
-    console.log('submit');
-    setdata(data);
+    const bytes = JSON.stringify(bufferData).length
+    const megabytes = bytes/ (1024 * 1024)
+    console.log(megabytes.toFixed(2), 'amir')
+    console.log("img", bufferData);
+    const all = { ...data, img: bufferData };
+    setalldata(data, img);
+    console.log(all, "all");
+    post(all);
   };
 
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: { width: 1920, height: 1080, }
-      })
-      .then(stream => {
-        let video = videoRef.current
-        video.srcObject = stream
-        video.play()
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+  const post = async (all) => {
+    axios
+      .post("http://localhost:8080/recipes",all)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  };
 
-  const takePhoto = () => {
-    const width = 414
-    const height = width / (16/9)
+  const DragDropFiles = () => {
+    const [files, setFiles] = useState(null);
+    const inputRef = useRef();
 
-    let video = videoRef.current
-    let photo = photoRef.current
+    const handleDragOver = (event) => {
+      event.preventDefault();
+    };
 
-    photo.width = width
-    photo.height = height
+    const handleDrop = (event) => {
+      event.preventDefault();
+      setFiles(event.dataTransfer.files);
+    };
 
-    let ctx = photo.getContext('2d')
-    ctx.drawImage(video , 0 , 0 ,width, height)
-  }
+    const handleUpload = async () => {
+      if (files && files.length > 0) {
+        const file = files[0];
+        const maxSize = 50 * 1024 * 1024; // 50MB - הגבלת גודל הקובץ בבתחילה מוגדרת ל-50 מגהבייט
+        
+        if (file.size <= maxSize) {
+          const blobUrl = URL.createObjectURL(file);
+          const blobFile = new File([file], file.name, { type: file.type });
+          URL.revokeObjectURL(blobUrl);
+    
+          // Saving the Buffer of the file
+          const reader = new FileReader();
+          reader.onload = () => {
+            const buffer = Buffer.from(reader.result);
+            setimg(buffer);
+          };
+          reader.readAsArrayBuffer(blobFile);
+    
+          // Upload the file
+          const formData = new FormData();
+          formData.append("Files", blobFile);
+    
+          // Rest of your code...
+        }  else {
 
-  const closePhoto = () =>{
-    let photo = photoRef.current
-    let ctx = photoRef.getContext('2d')
+}
 
-    ctx.clearReact(0,0,photo.width , photo.height)
+        
+      }
+    };
 
-    sethasPhoto(false)
-  }
+    if (files)
+      return (
+        <div className="uploads">
+          <ul>
+            {Array.from(files).map((file, idx) => (
+              <li key={idx}>{file.name}</li>
+            ))}
+          </ul>
+          <div className="actions">
+            <button onClick={() => setFiles(null)}>Cancel</button>
+            <button onClick={handleUpload}>Upload</button>
+          </div>
+        </div>
+      );
 
-  useEffect(() =>{
-    getVideo()
-  },[videoRef])
-
-
+    return (
+      <>
+        <div
+          className="dropzone"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <h5>תוסיף תמונה</h5>
+          <input
+            type="file"
+            multiple
+            onChange={(event) => setFiles(event.target.files)}
+            hidden
+            accept="image/png, image/jpeg"
+            ref={inputRef}
+          />
+          <button onClick={() => inputRef.current.click()}>Select Files</button>
+        </div>
+      </>
+    );
+  };
 
   return (
     <div>
-      <div>
-        <form onSubmit={handleSubmit(onSubmitt)}>
-          <div>
-            <video ref={videoRef}></video>
-            <button onClick={takePhoto} >צלם</button>
-          </div>
-          <div>
-            <canvas ref={photoRef}></canvas>
-            <button onClick={closePhoto} >סגור</button>
-          </div>
-          <br />
-          <label>
-            When does the vacation start?
-            <input type="number" placeholder="season start and end" {...register('quantity')} />
-          </label>
-          <br />
-          <label>
-            Card Title
-            <input type="text" placeholder="Card Title" {...register('name')} />
-          </label>
-          <br />
-          <label>
-            Vacation information
-            <textarea placeholder="vacation information" {...register('description')} />
-          </label>
-          <br />
-          <label>
-            How much does it cost?
-            <input type="number" placeholder="how much is cost" {...register('unit_price')} />
-          </label>
-          <br />
-          <label>
-            When does the vacation end?
-            <input type="date" placeholder="tourism company" {...register('returntime')} />
-          </label>
-          <br />
-          <button type="button">
-            Submit
-          </button>
-        </form>
+      <div className="big-div-addRecipes">
+        <DragDropFiles />
+
+        <Form onSubmit={handleSubmit(onSubmitt)}>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+            <Form.Label>רכיבים</Form.Label>
+            <Form.Control as="textarea" rows={3} {...register("Ingredients")} />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>הוראות הכנה</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              {...register("Instructions")}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>סוג אוכל</Form.Label>
+            <Form.Select defaultValue="1" {...register("type_of_food")}>
+              <option value="1">בשרי</option>
+              <option value="2">חלבי</option>
+              <option value="3">פרווה</option>
+              <option value="4">טבעוני</option>
+              <option value="5">קינוח</option>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>לא חייב לבחור עם אין</Form.Label>
+            <Form.Select defaultValue="null" {...register("type_of_food_two")}>
+              <option value="">בחר סוג מזון</option>
+              <option selected value="1">
+                בשרי
+              </option>
+              <option value="2">חלבי </option>
+              <option value="3">פרווה</option>
+              <option value="4">טבעוני</option>
+              <option value="5">קינוח</option>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Label>שם</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="אמיר"
+              {...register("name")}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Label>טלפון</Form.Label>
+            <Form.Control
+              type="tel"
+              placeholder="0526882146"
+              {...register("phone")}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Label> אישור לפרסום פרטים אישים</Form.Label>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+                {...register("approval")}
+              />
+            </div>
+          </Form.Group>
+
+          <input type="submit" />
+        </Form>
       </div>
     </div>
   );
 }
 
-export default Product;
+export default addRecipes;
+
+// @PrimaryGeneratedColumn('increment')
+// id: number
+
+// @Column('blob')
+// data: Buffer;
+
+// @Column()
+// Ingredients: string
+
+// @Column()
+// Instructions: string
+
+// @Column()
+// name: string
+
+// @Column()
+// phone: number
+
+// @Column({nullable: true, default: true})
+// approval: boolean
+
+// 1 בשרי
+// 2 חלבי
+// 3 פרווה
+// 4 טבעוני
+// 5 קינוח

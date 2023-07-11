@@ -1,9 +1,7 @@
-import 'reflect-metadata'
-import { DataSource } from 'typeorm'
-import { RDBMS_MYSQL } from './constants'
-import { Order } from './entity/Recipes'
-import { Customer } from './entity/Customer'
-import { Product } from './entity/Product'
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+import { RDBMS_MYSQL } from "./constants";
+import { Recipes } from "./entity/Recipes";
 
 export const AppDataSource = new DataSource({
   type: RDBMS_MYSQL,
@@ -14,7 +12,8 @@ export const AppDataSource = new DataSource({
   database: process.env.MYSQL_DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [Order],
+  entities: [Recipes],
   migrations: [],
+
   subscribers: [],
-})
+});

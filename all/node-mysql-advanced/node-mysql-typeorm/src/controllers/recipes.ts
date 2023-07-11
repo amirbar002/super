@@ -1,98 +1,121 @@
-import { NOT_FOUND } from '../constants'
-import { Order, Status } from '../entity/Recipes'
-import { Product } from '../entity/Product'
-import { findCustomers } from './customers'
-import { findProducts } from './products'
+import { NOT_FOUND } from "../constants";
+import { Recipes  } from "../entity/Recipes";
+// import { Product } from '../entity/Product'
+// import { findCustomers } from './customers'
+// import { findProducts } from './products'
 
-export const createOrder = async (
-  record: Order,
-  productIds: number[]
-): Promise<Order> => {
-  const order = Order.create(record)
+export const createOrder = async (record: Recipes): Promise<Recipes> => {
+   const recipes = Recipes.create(record)
+   return await recipes.save()
+ }
 
-  const promises: Promise<Product[]>[] = []
-  for (const productId of productIds) {
-    promises.push(findProducts(productId))
-  }
+// export const createOrder = async (record: Recipes): Promise<Recipes> => {
+//   const order = Order.create(record);
 
-  const products = await Promise.all(promises)
-  order.products = products.flat()
-  return await order.save()
-}
+//   const promises: Promise<Product[]>[] = [];
+//   for (const productId of productIds) {
+//     promises.push(findProducts(productId));
+//   }
+
+//   const products = await Promise.all(promises);
+//   order.products = products.flat();
+//   return await order.save();
+// };
 
 export const findOrders = async (
-  orderId?: number,
+  recipesId?: number,
   withRelations = false
-): Promise<Order[]> => {
-  return await Order.find({
-    ...(orderId ? { where: { id: orderId } } : {}),
-    ...(withRelations
-      ? {
-          relations: {
-            customer: true,
-            products: true,
-          },
-        }
-      : {}),
+): Promise<Recipes[]> => {
+  return await Recipes.find({
+    ...(recipesId ? { where: { id: recipesId } } : {}),
   })
 }
 
+// export const findOrders = async (
+//   orderId?: number,
+//   withRelations = false
+// ): Promise<Recipes[]> => {
+//   return await Recipes.find({
+//     ...(orderId ? { where: { id: orderId } } : {}),
+//     ...(withRelations
+//       ? {
+//           relations: {
+//             customer: true,
+//             products: true,
+//           },
+//         }
+//       : {}),
+//   });
+// };
+
 export const deleteOrder = async (orderId: number): Promise<boolean> => {
-  const res = await Order.delete(orderId)
+  const res = await Recipes.delete(orderId);
+  return res.affected ? true : false;
+};
+
+export const updateOrder = async (
+  recipesId: number,
+  data: Recipes
+): Promise<boolean> => {
+  const res = await Recipes.update(recipesId, data)
   return res.affected ? true : false
 }
 
+// export const updateOrder = async (
+//   orderId: number,
+//   data: any
+// ): Promise<Recipes | typeof NOT_FOUND> => {
+//   const { products: productIds, customer: customerId, ...orderProps } = data;
+//   const [order] = await findOrders(orderId);
 
-export const updateOrder = async (orderId: number, data:any): Promise<Order | typeof NOT_FOUND > => {
-    const { products: productIds, customer: customerId, ...orderProps} = data
-    const [order] = await findOrders(orderId)
+//   if (!order) {
+//     return NOT_FOUND;
+//   }
 
-    if(!order){
-        return NOT_FOUND
-    }
+//   if (data.customer) {
+//     const [customer] = await findCustomers(customerId);
 
-    if(data.customer){
-        const [customer] = await findCustomers(customerId)
+//     if (!customer) {
+//       return NOT_FOUND;
+//     }
 
-        if(!customer){
-            return NOT_FOUND
-        }
+//     order.customer = customer;
+//   }
 
-        order.customer = customer
-    }
+//   if (data.products && data.products.length) {
+//     const promises: Promise<Product[]>[] = [];
+//     for (const productId of productIds) {
+//       promises.push(findProducts(productId));
+//     }
 
-    if(data.products && data.products.length){
-        const promises: Promise<Product[]>[] = []
-        for (const productId of productIds) {
-          promises.push(findProducts(productId))
-        }
-      
-        const products = await Promise.all(promises)
-    
-        if(!products.length){
-            return NOT_FOUND
-        }
-        order.products = products.flat()
-    }
+//     const products = await Promise.all(promises);
 
-    for(const key in orderProps){
-        order[key] = orderProps[key]
-    }
+//     if (!products.length) {
+//       return NOT_FOUND;
+//     }
+//     order.products = products.flat();
+//   }
 
-    return await order.save()
-}
+//   for (const key in orderProps) {
+//     order[key] = orderProps[key];
+//   }
 
+//   return await order.save();
+// };
 
-export const joinAndGroupbyOrders = async (status: Status, lastNameArr: string[]): Promise<any> => {
-    return await Order.createQueryBuilder('order')
-    .select(['order.is_paid', 'product.currency', 'customer.last_name'])
-    .addSelect('SUM(product.unit_price * product.quantity)', 'sum')
-    .innerJoin('order.customer', 'customer')
-    .innerJoin('order.products', 'product')
-    .where('order.status = :theStatus', {theStatus: status})
-    .groupBy('order.is_paid')
-    .addGroupBy('customer.last_name')
-    .addGroupBy('product.currency')
-    .having('customer.last_name in (:lastNames)', {lastNames: lastNameArr})
-    .getRawMany()
-}
+// export const joinAndGroupbyOrders = async (
+//   status: Status,
+//   lastNameArr: string[]
+// ): Promise<any> => {
+//   return await Order.createQueryBuilder("order")
+//     .select(["order.is_paid", "product.currency", "customer.last_name"])
+//     .addSelect("SUM(product.unit_price * product.quantity)", "sum")
+//     .innerJoin("order.customer", "customer")
+//     .innerJoin("order.products", "product")
+//     .where("order.status = :theStatus", { theStatus: status })
+//     .groupBy("order.is_paid")
+//     .addGroupBy("customer.last_name")
+//     .addGroupBy("product.currency")
+//     .having("customer.last_name in (:lastNames)", { lastNames: lastNameArr })
+//     .getRawMany();
+// };
