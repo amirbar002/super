@@ -15,26 +15,40 @@ function addRecipes() {
   const videoRef = useRef(null);
   const photoRef = useRef(null);
 
-  const onSubmitt = (data) => {
-    const bufferData = Buffer.from(img);
+  const onSubmitt = async (data) => {
+    // const bufferData = Buffer.from(img);
     console.log("submit");
     console.log(data);
-    const bytes = JSON.stringify(bufferData).length
-    const megabytes = bytes/ (1024 * 1024)
-    console.log(megabytes.toFixed(2), 'amir')
-    console.log("img", bufferData);
-    const all = { ...data, img: bufferData };
-    setalldata(data, img);
-    console.log(all, "all");
-    post(all);
+const uploads = data
+    // Calculate the size of the buffer in megabytes
+    const bytes = img.length;
+    const megabytes = bytes / (1024 * 1024);
+    console.log(megabytes.toFixed(2), "megabytes");
+    console.log(img);
+
+    try {
+      console.log('tast');
+      const formData = new FormData(); 
+      formData.append("data", uploads);
+      formData.append("image", img);
+      console.log(formData.entries(),'formdata');
+      for (var pair of formData.entries()) {
+        console.log(pair[0]+ ' - ' + pair[1]); 
+    }
+      // Send the formData to the server
+      const config = {
+        headers:{
+            "Content-Type":"multipart/form-data"
+        }
+     }
+      const response = await axios.post("http://localhost:8080/recipes", formData , config);
+
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const post = async (all) => {
-    axios
-      .post("http://localhost:8080/recipes",all)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  };
 
   const DragDropFiles = () => {
     const [files, setFiles] = useState(null);
@@ -52,25 +66,26 @@ function addRecipes() {
     const handleUpload = async () => {
       if (files && files.length > 0) {
         const file = files[0];
-        const maxSize = 50 * 1024 * 1024; // 50MB - הגבלת גודל הקובץ בבתחילה מוגדרת ל-50 מגהבייט
+        const maxSize = 50 * 1024 * 1024; 
         
         if (file.size <= maxSize) {
           const blobUrl = URL.createObjectURL(file);
           const blobFile = new File([file], file.name, { type: file.type });
           URL.revokeObjectURL(blobUrl);
     
-          // Saving the Buffer of the file
+
           const reader = new FileReader();
           reader.onload = () => {
             const buffer = Buffer.from(reader.result);
-            setimg(buffer);
+           console.log(buffer);
           };
           reader.readAsArrayBuffer(blobFile);
     
           // Upload the file
           const formData = new FormData();
-          formData.append("Files", blobFile);
-    
+          // formData.append("img", blobFile);
+          setimg(blobFile)
+        
           // Rest of your code...
         }  else {
 

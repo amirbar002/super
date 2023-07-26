@@ -1,13 +1,13 @@
 import { NOT_FOUND } from "../constants";
 import { Recipes  } from "../entity/Recipes";
-// import { Product } from '../entity/Product'
-// import { findCustomers } from './customers'
-// import { findProducts } from './products'
+import { Buffer } from "buffer";
 
-export const createOrder = async (record: Recipes): Promise<Recipes> => {
-   const recipes = Recipes.create(record)
-   return await recipes.save()
- }
+
+export const createOrder = async (record: Recipes, imageBlob: Buffer): Promise<Recipes> => {
+  const recipes = Recipes.create(record);
+  recipes.img = imageBlob; 
+  return await recipes.save();
+};
 
 // export const createOrder = async (record: Recipes): Promise<Recipes> => {
 //   const order = Order.create(record);
