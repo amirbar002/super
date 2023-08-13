@@ -1,8 +1,11 @@
 
+import { Navbarweb } from "@/app/home/Navbarweb"
 
 function abuot() {
   return (
-    <div>abuot</div>
+    <div>
+      <Navbarweb/>
+    </div>
   )
 }
 

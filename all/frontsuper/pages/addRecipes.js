@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Navbarweb } from "@/app/home/Navbarweb"
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
@@ -19,8 +20,8 @@ function addRecipes() {
     // const bufferData = Buffer.from(img);
     console.log("submit");
     console.log(data);
-const uploads = data
     // Calculate the size of the buffer in megabytes
+    
     const bytes = img.length;
     const megabytes = bytes / (1024 * 1024);
     console.log(megabytes.toFixed(2), "megabytes");
@@ -29,7 +30,13 @@ const uploads = data
     try {
       console.log('tast');
       const formData = new FormData(); 
-      formData.append("data", uploads);
+      formData.append("Instructions", data.Instructions);
+      formData.append("Ingredients", data.Ingredients);
+      formData.append("type_of_food", data.type_of_food);
+      formData.append("type_of_food_two", data.type_of_food_two);
+      formData.append("name", data.name);
+      formData.append("phone", data.phone);
+      formData.append("foodName", data.foodName);
       formData.append("image", img);
       console.log(formData.entries(),'formdata');
       for (var pair of formData.entries()) {
@@ -134,10 +141,19 @@ const uploads = data
 
   return (
     <div>
+      <Navbarweb/>
       <div className="big-div-addRecipes">
         <DragDropFiles />
 
         <Form onSubmit={handleSubmit(onSubmitt)}>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Label>שם המנה</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder=""
+              {...register("foodName")}
+            />
+          </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>רכיבים</Form.Label>
             <Form.Control as="textarea" rows={3} {...register("Ingredients")} />
@@ -163,8 +179,8 @@ const uploads = data
           </Form.Group>
           <Form.Group>
             <Form.Label>לא חייב לבחור עם אין</Form.Label>
-            <Form.Select defaultValue="null" {...register("type_of_food_two")}>
-              <option value="">בחר סוג מזון</option>
+            <Form.Select defaultValue="0" {...register("type_of_food_two")}>
+              <option value="0">בחר סוג מזון</option>
               <option selected value="1">
                 בשרי
               </option>
@@ -189,18 +205,6 @@ const uploads = data
               placeholder="0526882146"
               {...register("phone")}
             />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label> אישור לפרסום פרטים אישים</Form.Label>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                id="defaultCheck1"
-                {...register("approval")}
-              />
-            </div>
           </Form.Group>
 
           <input type="submit" />
@@ -231,7 +235,7 @@ export default addRecipes;
 // phone: number
 
 // @Column({nullable: true, default: true})
-// approval: boolean
+// foodName: boolean
 
 // 1 בשרי
 // 2 חלבי

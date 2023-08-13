@@ -1,11 +1,10 @@
 import { NOT_FOUND } from "../constants";
-import { Recipes  } from "../entity/Recipes";
+import { Recipes } from "../entity/Recipes";
 import { Buffer } from "buffer";
 
-
-export const createOrder = async (record: Recipes, imageBlob: Buffer): Promise<Recipes> => {
+export const createOrder = async (record: Recipes): Promise<Recipes> => {
+  console.log(record, "record");
   const recipes = Recipes.create(record);
-  recipes.img = imageBlob; 
   return await recipes.save();
 };
 
@@ -28,8 +27,17 @@ export const findOrders = async (
 ): Promise<Recipes[]> => {
   return await Recipes.find({
     ...(recipesId ? { where: { id: recipesId } } : {}),
-  })
-}
+  });
+};
+
+export const findOrderstypeof = async (
+  recipesId?: number,
+  withRelations = false
+): Promise<Recipes[]> => {
+  return await Recipes.find({
+    ...(recipesId ? { where: { type_of_food: recipesId } } : {}),
+  });
+};
 
 // export const findOrders = async (
 //   orderId?: number,
@@ -57,9 +65,9 @@ export const updateOrder = async (
   recipesId: number,
   data: Recipes
 ): Promise<boolean> => {
-  const res = await Recipes.update(recipesId, data)
-  return res.affected ? true : false
-}
+  const res = await Recipes.update(recipesId, data);
+  return res.affected ? true : false;
+};
 
 // export const updateOrder = async (
 //   orderId: number,

@@ -5,33 +5,33 @@ import {
   findOrders,
   deleteOrder,
   updateOrder,
+  findOrderstypeof
 } from "../controllers/recipes";
 import multer from "multer";
 import { MulterRequest } from "../types/types";
+import { log } from "console";
 
 const router: Router = Router();
 
-const upload = multer({ storage: multer.memoryStorage()});
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(
   "/",
   upload.single("image"),
   async (req: MulterRequest, res: Response) => {
     try {
-      if (req.file) {
+      if (!req.file) {
         console.log("not uploaded");
 
         return new Error("no file uploaded");
       }
       console.log("uploading");
-      console.log(req.body.value());
-      console.log(req.body);
-      console.log(req.file);
+      console.log(req.file.buffer, "buffer");
 
-      const imageBlob = req.body.buffer;
-      console.log("ssssssssssssssssssss");
+      const order = { ...req.body, img: req.file.buffer };
+      console.log(order, "order");
 
-      const newOrder = await createOrder(req.body, imageBlob);
+      const newOrder = await createOrder(order);
       console.log("gooda");
 
       res.send(newOrder);
@@ -53,16 +53,31 @@ router.post(
 //     }
 //   })
 
+
+router.get("/type", async (req: Request, res: Response) => {
+  try {
+    const orders = await findOrders(null, true);
+    let arry: number[] = [];
+    orders.map((ev) => arry.push(ev.type_of_food));
+    orders.length ? res.send(arry) : res.sendStatus(404);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
 router.get("/:id", async (req: Request, res: Response) => {
   try {
-    const withRelations = req.query.withRelations === "true";
-    const [order] = await findOrders(+req.params.id, withRelations);
+    const order = await findOrderstypeof(+req.params.id);
+    console.log(order , 'orders');
+    
     order ? res.send(order) : res.sendStatus(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
 });
+
+
 
 router.get("/", async (req: Request, res: Response) => {
   try {
@@ -72,6 +87,8 @@ router.get("/", async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 });
+
+
 
 router.patch("/:id", async (req: Request, res: Response) => {
   try {

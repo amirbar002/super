@@ -2,7 +2,7 @@ import "dotenv/config";
 import express, { Request, Response, Application } from "express";
 import { AppDataSource } from "./data-source";
 import cors from "cors";
-import orders from "./routers/recipes";
+import recipes from "./routers/recipes";
 import bodyParser from "body-parser";
 
 (async () => {
@@ -13,12 +13,12 @@ import bodyParser from "body-parser";
 
     const app: Application = express();
     app.use(cors());
-    app.use(bodyParser.json({limit: '50mb'}));
-    app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
- 
+    app.use(bodyParser.json({ limit: "50mb" }));
+    app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+
     app.use(express.json());
 
-    app.use("/recipes", orders);
+    app.use("/recipes", recipes);
 
     app.use((req: Request, res: Response) => {
       res.status(400).send("Resource not found!");
