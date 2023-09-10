@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Navbarweb } from "@/app/home/Navbarweb"
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
@@ -17,18 +16,12 @@ function addRecipes() {
   const photoRef = useRef(null);
 
   const onSubmitt = async (data) => {
-    // const bufferData = Buffer.from(img);
-    console.log("submit");
-    console.log(data);
-    // Calculate the size of the buffer in megabytes
-    
     const bytes = img.length;
     const megabytes = bytes / (1024 * 1024);
-    console.log(megabytes.toFixed(2), "megabytes");
-    console.log(img);
+  
 
     try {
-      console.log('tast');
+     
       const formData = new FormData(); 
       formData.append("Instructions", data.Instructions);
       formData.append("Ingredients", data.Ingredients);
@@ -38,11 +31,7 @@ function addRecipes() {
       formData.append("phone", data.phone);
       formData.append("foodName", data.foodName);
       formData.append("image", img);
-      console.log(formData.entries(),'formdata');
-      for (var pair of formData.entries()) {
-        console.log(pair[0]+ ' - ' + pair[1]); 
-    }
-      // Send the formData to the server
+      
       const config = {
         headers:{
             "Content-Type":"multipart/form-data"
@@ -71,7 +60,7 @@ function addRecipes() {
     };
 
     const handleUpload = async () => {
-      if (files && files.length > 0) {
+      if (files && files.length === 1) {
         const file = files[0];
         const maxSize = 50 * 1024 * 1024; 
         
@@ -94,12 +83,12 @@ function addRecipes() {
           setimg(blobFile)
         
           // Rest of your code...
-        }  else {
-
-}
-
+        }  
         
-      }
+      } else {
+        alert("נבחרה יותר מתמונה אחת");
+      } 
+
     };
 
     if (files)
@@ -141,7 +130,6 @@ function addRecipes() {
 
   return (
     <div>
-      <Navbarweb/>
       <div className="big-div-addRecipes">
         <DragDropFiles />
 
@@ -151,25 +139,25 @@ function addRecipes() {
             <Form.Control
               type="text"
               placeholder=""
-              {...register("foodName")}
+              {...register("foodName",{ required: true })}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>רכיבים</Form.Label>
-            <Form.Control as="textarea" rows={3} {...register("Ingredients")} />
+            <Form.Control as="textarea" rows={3} {...register("Ingredients",{ required: true })} />
           </Form.Group>
           <Form.Group>
             <Form.Label>הוראות הכנה</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
-              {...register("Instructions")}
+              {...register("Instructions",{ required: true })}
             />
           </Form.Group>
 
           <Form.Group>
             <Form.Label>סוג אוכל</Form.Label>
-            <Form.Select defaultValue="1" {...register("type_of_food")}>
+            <Form.Select defaultValue="1" {...register("type_of_food",{ required: true })}>
               <option value="1">בשרי</option>
               <option value="2">חלבי</option>
               <option value="3">פרווה</option>
@@ -179,7 +167,7 @@ function addRecipes() {
           </Form.Group>
           <Form.Group>
             <Form.Label>לא חייב לבחור עם אין</Form.Label>
-            <Form.Select defaultValue="0" {...register("type_of_food_two")}>
+            <Form.Select defaultValue="0" {...register("type_of_food_two",{ required: true })}>
               <option value="0">בחר סוג מזון</option>
               <option selected value="1">
                 בשרי
@@ -195,7 +183,7 @@ function addRecipes() {
             <Form.Control
               type="text"
               placeholder="אמיר"
-              {...register("name")}
+              {...register("name",{ required: true })}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -203,7 +191,7 @@ function addRecipes() {
             <Form.Control
               type="tel"
               placeholder="0526882146"
-              {...register("phone")}
+              {...register("phone", { required: true })}
             />
           </Form.Group>
 

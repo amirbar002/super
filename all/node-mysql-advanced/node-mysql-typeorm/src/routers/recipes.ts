@@ -5,7 +5,8 @@ import {
   findOrders,
   deleteOrder,
   updateOrder,
-  findOrderstypeof
+  findOrderId,
+
 } from "../controllers/recipes";
 import multer from "multer";
 import { MulterRequest } from "../types/types";
@@ -42,34 +43,23 @@ router.post(
   }
 );
 
-// router.post('/group-orders', async (req: Request, res: Response) => {
-//     try {
-//       const { status, lastNameArr } = req.body
-//       const responseData = await joinAndGroupbyOrders(status, lastNameArr)
-//       responseData.length ? res.send(responseData) : res.sendStatus(404)
-//     } catch (error) {
-//       console.error(error)
-//       res.sendStatus(500)
-//     }
-//   })
-
-
-router.get("/type", async (req: Request, res: Response) => {
+router.get("/search/:id", async (req: Request, res: Response) => {
   try {
-    const orders = await findOrders(null, true);
-    let arry: number[] = [];
-    orders.map((ev) => arry.push(ev.type_of_food));
-    orders.length ? res.send(arry) : res.sendStatus(404);
+    const order = await findOrders(req.params.id);
+    console.log(order , 'orders');
+    
+    order ? res.send(order) : res.sendStatus(404);
   } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 });
 
+
 router.get("/:id", async (req: Request, res: Response) => {
   try {
-    const order = await findOrderstypeof(+req.params.id);
+    const order = await findOrderId(+req.params.id);
     console.log(order , 'orders');
-    
     order ? res.send(order) : res.sendStatus(404);
   } catch (error) {
     console.error(error);

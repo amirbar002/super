@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response, Application } from "express";
 import { AppDataSource } from "./data-source";
-import cors from "cors";
+import cors from "cors"
 import recipes from "./routers/recipes";
 import bodyParser from "body-parser";
 

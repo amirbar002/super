@@ -1,36 +1,32 @@
 import React from "react";
-import { Navbarweb } from "@/app/home/Navbarweb";
-import Image from "next/image";
-import Link from "next/link";
+import '../../app/globals.css'
 import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.css";
 import bufferToDataUrl from 'buffer-to-data-url';
 
 const AllEvents = ({ data }) => {
   
-
-
-  data.map((ev) => {
-    console.log(typeof ev.img.data, "image");
-    const arrayNumbers = ev.img.data;
-    if (Array.isArray(arrayNumbers)) {
-        const buffer = Buffer.from(arrayNumbers);
-        const result = bufferToDataUrl("potho", buffer)
-        ev.img = result
-        console.log(ev,'sssssssssssssssssssssssss');
-        }else{
-          console.log("Invalid array of numbers:");
-        }
+const modifiedData = data.map((ev) => {
+  console.log(typeof ev.img.data, "image");
+  const arrayNumbers = ev.img.data;
+  if (Array.isArray(arrayNumbers)) {
+    const buffer = Buffer.from(arrayNumbers);
+    const result = bufferToDataUrl("potho", buffer);
+    return { ...ev, img: result }; 
+  } else {
+    console.log("Invalid array of numbers:");
+    return ev
+  }
 });
  
 
-  return (
+  return ( 
     <div>
-      <Navbarweb />
+      <div className="bigdiveventpage">
       <div className="events_page">
-        {data.map((ev) => (
-          <Card style={{ width: "18rem" }}>
-            <div key={ev.id}>
+        {modifiedData.map((ev) => (
+          <Card key={ev.id} className="cardmeat" style={{ width: "18rem" }}>
+            <div >
               <Card.Body>
                 <Card.Img variant="top" src={ev.img} />
                 <Card.Title>{ev.foodName}</Card.Title>
@@ -41,6 +37,7 @@ const AllEvents = ({ data }) => {
             </div>
           </Card>
         ))}
+      </div>
       </div>
     </div>
   );

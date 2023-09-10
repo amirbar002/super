@@ -27,7 +27,7 @@ export class Recipes extends BaseEntity {
   @Column()
   phone: number
   
-  @Column({nullable: false } )
-  foodName: boolean
+  @Column()
+  foodName: string
 
 }

@@ -8,6 +8,19 @@ height: 80px;
     justify-content: space-around;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.events_page{
+    display: grid;
+    grid-template-areas:
+        "strawderry salad salad";
+    margin-bottom: 4%;
+    justify-items: center;
+
+}
+
+.cardmeat{
+    margin-top: 5%;
+}
+
+.mr-sm-2{
+    background-color: white;
+}
