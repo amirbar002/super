@@ -1,21 +1,17 @@
 
 import "bootstrap/dist/css/bootstrap.css";
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-// import Navbar from 'react-bootstrap/Navbar';
-import Form from 'react-bootstrap/Form'
 import Link from "next/link"
 
 export const Home = ()=>(
-  <div>
-    <Link href="events/meat" >מאכלים בשרים</Link>
+  <div className="big-div-home">
+    <Link className="first-letter-bold" href="events/meat" >מאכלים בשרים</Link>
     <br/>
-    <Link href="events/mliky" >מאכלים חלבי</Link>
+    <Link className="first-letter-bold" href="events/mliky" >מאכלים חלבי</Link>
     <br/>
-    <Link href="events/furfood" >מאכלים פרווה</Link>
+    <Link className="first-letter-bold" href="events/furfood" >מאכלים פרווה</Link>
     <br/>
-    <Link href="events/vegan" >מאכלים צמחוני</Link>
+    <Link className="first-letter-bold" href="events/vegan" >מאכלים צמחוני</Link>
     <br/>
-    <Link href="events/dessert" >מאכלים קיהוחים</Link>
+    <Link className="first-letter-bold" href="events/dessert" >מאכלים קינוחים </Link>
   </div> 
 )

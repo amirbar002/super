@@ -24,3 +24,24 @@ height: 80px;
 .mr-sm-2{
     background-color: white;
 }
+
+.first-letter-bold{
+    font-weight: bold;
+
+}
+
+.big-div-home{
+    display: grid;
+    justify-content: center;
+    font-size: large;
+}
+
+.footer-css{
+    margin-top: 4%;
+    display: grid;
+    justify-content: center;
+}
+
+.me-auto{
+        margin-left: 30%
+} 

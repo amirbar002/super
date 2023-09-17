@@ -25,19 +25,17 @@ export const Navbarweb = ({ data }) => {
 
   const onSubmitt = async (data) => {
     // event.preventDefault();
-      setSearchTerm(data);
-      const response = await axios.get(
-        `http://localhost:8080/recipes/search/${data.search}`
-      )
-  
-      if (response.data.length > 0) {
-        dispatch(saveData(response.data));
-        router.push("http://localhost:3000/events/search");
-      } else {
-        alert("No results found.");
-      }
-    
-   
+    setSearchTerm(data);
+    const response = await axios.get(
+      `http://localhost:8080/recipes/search/${data.search}`
+    );
+
+    if (response.data.length > 0) {
+      dispatch(saveData(response.data));
+      router.push("http://localhost:3000/events/search");
+    } else {
+      alert("No results found.");
+    }
   };
 
   data = arraydata;
@@ -48,33 +46,33 @@ export const Navbarweb = ({ data }) => {
         {arraydata.length > 0 && <Search data={arraydata} />}
         <Navbar bg="primary" data-bs-theme="primary">
           <Container>
-            <Navbar.Brand>ספר המתכונים האיילתי</Navbar.Brand>
-            <Nav className="me-auto">
+            <Form
+              onSubmit={handleSubmit(onSubmitt)}
+              className="Searchinput"
+              inline="true"
+            >
+              <Row>
+                <Col xs="auto">
+                  <Form.Control
+                    type="text"
+                    placeholder="Search"
+                    className=" mr-sm-2"
+                    {...register("search", { required: true })}
+                  />
+                </Col>
+                <Col xs="auto">
+                  <Button type="submit">Submit</Button>
+                </Col>
+              </Row>
+            </Form>
+            <Nav className="me-auto ">
+            <Nav.Link href="abuot">הסבר</Nav.Link>
               <Nav.Link href="/">עמוד הבית</Nav.Link>
-              <Nav.Link href="abuot">הסבר</Nav.Link>
               <Nav.Link href="http://localhost:3000/addRecipes">
                 הוסיף מתכון
               </Nav.Link>
-              <Form
-                onSubmit={handleSubmit(onSubmitt)}
-                className="Searchinput"
-                inline="true"
-              >
-                <Row>
-                  <Col xs="auto">
-                    <Form.Control
-                      type="text"
-                      placeholder="Search"
-                      className=" mr-sm-2"
-                      {...register("search",{ required: true })}
-                    />
-                  </Col>
-                  <Col xs="auto">
-                    <Button type="submit">Submit</Button>
-                  </Col>
-                </Row>
-              </Form>
             </Nav>
+            <Navbar.Brand>ספר המתכונים האיילתי</Navbar.Brand>
           </Container>
         </Navbar>
       </div>
