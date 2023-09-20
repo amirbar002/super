@@ -30,16 +30,18 @@ const Searchpage = () => {
         <div className="events_page">
           {modifiedData.map((ev) => (
             <Card key={ev.id} className="cardmeat" style={{ width: "18rem" }}>
-              <div >
-                <Card.Body>
-                  <Card.Img variant="top" src={ev.img} />
-                  <Card.Title>{ev.foodName}</Card.Title>
-                  <Card.Text>{ev.Ingredients}</Card.Text>
-                  <Card.Text>{ev.Instructions}</Card.Text>
-                  <p>{ev.name}</p>
-                </Card.Body>
-              </div>
-            </Card>
+            <div >
+              <Card.Body>
+                <Card.Img variant="top" src={ev.img} />
+                <h7 className="bclass" >:שם המנה</h7>
+                <Card.Title className="bclass"> {ev.foodName}</Card.Title>
+                <b className="bclass" >:מצרכים</b> 
+                <Card.Text className="bclass" >{ev.Ingredients}</Card.Text>
+                <b className="bclass">:הוראות</b>
+                <Card.Text className="bclass">{ev.Instructions}</Card.Text>
+              </Card.Body>
+            </div>
+          </Card>
           ))}
         </div>
         </div>

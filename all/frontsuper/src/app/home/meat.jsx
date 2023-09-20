@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.css";
 import bufferToDataUrl from 'buffer-to-data-url';
 
+
 const AllEvents = ({ data }) => {
   
 const modifiedData = data.map((ev) => {
@@ -29,10 +30,12 @@ const modifiedData = data.map((ev) => {
             <div >
               <Card.Body>
                 <Card.Img variant="top" src={ev.img} />
-                <Card.Title>{ev.foodName}</Card.Title>
-                <Card.Text>{ev.Ingredients}</Card.Text>
-                <Card.Text>{ev.Instructions}</Card.Text>
-                <p>{ev.name}</p>
+                <h7 className="bclass" >:שם המנה</h7>
+                <Card.Title className="bclass"> {ev.foodName}</Card.Title>
+                <b className="bclass" >:מצרכים</b> 
+                <Card.Text className="bclass" >{ev.Ingredients}</Card.Text>
+                <b className="bclass">:הוראות</b>
+                <Card.Text className="bclass">{ev.Instructions}</Card.Text>
               </Card.Body>
             </div>
           </Card>

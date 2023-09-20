@@ -42,7 +42,7 @@ export const Navbarweb = ({ data }) => {
 
   return (
     <div>
-      <div>
+      <div className="dig-navbar-jsx" >
         {arraydata.length > 0 && <Search data={arraydata} />}
         <Navbar bg="primary" data-bs-theme="primary">
           <Container>
@@ -66,7 +66,7 @@ export const Navbarweb = ({ data }) => {
               </Row>
             </Form>
             <Nav className="me-auto ">
-            <Nav.Link href="abuot">הסבר</Nav.Link>
+            <Nav.Link href="http://localhost:3000/abuot">הסבר</Nav.Link>
               <Nav.Link href="/">עמוד הבית</Nav.Link>
               <Nav.Link href="http://localhost:3000/addRecipes">
                 הוסיף מתכון

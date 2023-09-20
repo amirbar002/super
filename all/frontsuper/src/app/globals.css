@@ -45,3 +45,18 @@ height: 80px;
 .me-auto{
         margin-left: 30%
 } 
+
+.bclass{
+    text-align: right;
+    display: block;
+}
+
+.dig-navbar-jsx{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+body{
+    padding-top: 50px;
+}

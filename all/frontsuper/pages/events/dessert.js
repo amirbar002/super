@@ -1,8 +1,29 @@
 import AllEvents from '../../src/app/home/meat';
 import axios from "axios";
+import Image from "next/legacy/image";
 
 const EventsPage = ({ data }) => {
-  return <AllEvents data={data} />;
+  return (
+    <>
+    <div
+        style={{
+          zIndex: -1,
+          position: "fixed",
+          width: "100vw",
+          height: "100vh",
+          objectFit: "cover",
+        }}
+      >
+        <Image
+          src="/../public/img5.jpeg"
+          alt="background"
+          layout="fill"
+          quality={100}
+        />
+      </div>
+  <AllEvents data={data} />
+  </>
+  );
  
   
 };
