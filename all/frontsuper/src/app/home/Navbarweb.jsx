@@ -45,7 +45,7 @@ export const Navbarweb = ({ data }) => {
       <div className="dig-navbar-jsx" >
         {arraydata.length > 0 && <Search data={arraydata} />}
         <Navbar bg="primary" data-bs-theme="primary">
-          <Container>
+          <Container className="Containernavbar" >
             <Form
               onSubmit={handleSubmit(onSubmitt)}
               className="Searchinput"
