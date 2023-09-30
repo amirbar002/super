@@ -1,5 +1,6 @@
-import { Express, Request } from 'express';
+import { Request } from 'express';
 
  export interface MulterRequest extends Request {
   file: any;
+  body: any;
 }
